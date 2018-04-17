@@ -4,7 +4,7 @@ A small Go utility application for splitting a large file (think gigabytes) into
 ## Available flags
 ```
 -b uint
-        Customize buffer size. (default 10000000)
+    Customize buffer size. (default 10000000)
 -d string
     Provide a directory path where partial files will be stored (default "parts")
 -f string
