@@ -25,19 +25,21 @@ func main() {
 
 	flag.Parse()
 
-	if _, err := os.Stat(*partsDir); os.IsNotExist(err) {
-		if err = os.MkdirAll(*partsDir, os.ModePerm); err != nil {
-			log.Fatal("error creating directory:", err)
-		}
-	}
-
-	//Try to read the file
+	// Try to read the file
 	file, err := os.Open(*fileToSplit)
 	if err != nil {
 		log.Fatal("error trying to open the file specified:", err)
 	}
 	defer file.Close()
 
+	// Check if the provided directory path for partials exits; create if it doesn't
+	if _, err := os.Stat(*partsDir); os.IsNotExist(err) {
+		if err = os.MkdirAll(*partsDir, os.ModePerm); err != nil {
+			log.Fatal("error creating directory:", err)
+		}
+	}
+
+	// Decide on the final partial file suffix. Choose flag suffix over the provided file's suffix
 	var partialFileSuffix string
 	if *partFileSuffix != "" {
 		partialFileSuffix = *partFileSuffix
@@ -80,7 +82,7 @@ func main() {
 			fileCounter++
 		}
 
-		if linesWritten <= *lineLimit {
+		if linesWritten < *lineLimit {
 			// Keep writing to the same file, increment counter
 			if _, err := fmt.Fprintln(currentFile, scanner.Text()); err != nil {
 				log.Fatal("error writing to file:", err)
