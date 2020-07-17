@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -61,6 +62,10 @@ func main() {
 	var linesWritten uint
 	var currentFile *os.File
 	var fileName string
+	lineEnding := "\n"
+	if "windows" == runtime.GOOS {
+		lineEnding = "\r\n"
+	}
 
 	// Start scanning
 	for scanner.Scan() {
@@ -84,7 +89,7 @@ func main() {
 
 		if linesWritten < *lineLimit {
 			// Keep writing to the same file, increment counter
-			if _, err := fmt.Fprintln(currentFile, scanner.Text()); err != nil {
+			if _, err := fmt.Fprintf(currentFile, fmt.Sprintf("%s%s", scanner.Text(), lineEnding)); err != nil {
 				log.Fatal("error writing to file:", err)
 			}
 			linesWritten++
