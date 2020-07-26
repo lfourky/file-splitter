@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 )
 
@@ -22,6 +21,8 @@ func main() {
 		partFileSuffix = flag.String("s", "", "Provide a suffix for each part.")
 
 		fileToSplit = flag.String("f", "", "Provide a relative path to file you wish to split.")
+
+		crlf = flag.Bool("crlf", false, "Use CRLF instead of LF for line endings.")
 	)
 
 	flag.Parse()
@@ -62,8 +63,9 @@ func main() {
 	var linesWritten uint
 	var currentFile *os.File
 	var fileName string
+
 	lineEnding := "\n"
-	if "windows" == runtime.GOOS {
+	if *crlf {
 		lineEnding = "\r\n"
 	}
 
