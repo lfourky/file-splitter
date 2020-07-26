@@ -15,6 +15,8 @@ A small Go utility application for splitting a large file (think gigabytes) into
     Provide a prefix for each part. (default "part_")
 -s string
     Provide a suffix for each part.
+-crlf bool
+    Use CRLF instead of LF for line endings.
 ```
 
 ## Running the program (example)
